@@ -11,8 +11,11 @@ import (
 
 func main() {
 
+	//repos
 	repos := repository.NewRepository()
+	//service
 	service := service.NewService(repos)
+	//handler
 	handler := handler.NewHandler(service)
 
 	//start
