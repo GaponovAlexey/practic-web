@@ -16,5 +16,7 @@ type Service struct {
 }
 
 func NewService(repository *repository.Repository) *Service {
-	return &Service{}
+	return &Service{
+			Authorization: ,
+	}
 }

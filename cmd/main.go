@@ -11,8 +11,21 @@ import (
 
 func main() {
 
+	//db
+	db, err := repository.NewPostgresDB(repository.Config{
+		Host:     "localhost",
+		Port:     "5432",
+		Username: "postgres",
+		Password: "postgres",
+		DBname:   "postgres",
+		SSLMode:  "disable",
+	})
+	if err != nil {
+		log.Fatal("failed to init", err)
+	}
+
 	//repos
-	repos := repository.NewRepository()
+	repos := repository.NewRepository(db)
 	//service
 	service := service.NewService(repos)
 	//handler
