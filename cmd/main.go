@@ -1,27 +1,37 @@
 package main
 
 import (
-	"log"
+	"os"
 
 	"github.com/GaponovAlexey/practic-web"
 	"github.com/GaponovAlexey/practic-web/pkg/handler"
 	"github.com/GaponovAlexey/practic-web/pkg/repository"
 	"github.com/GaponovAlexey/practic-web/pkg/service"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
+	//env
+	err := godotenv.Load()
+	if err != nil {
+		logrus.Fatal("Error loading .env file")
+	}
 
+	//config LogrusJson
+	logrus.SetFormatter(new(logrus.JSONFormatter))
 	//db
 	db, err := repository.NewPostgresDB(repository.Config{
-		Host:     "localhost",
-		Port:     "5432",
-		Username: "postgres",
-		Password: "postgres",
-		DBname:   "postgres",
-		SSLMode:  "disable",
+		Host:     os.Getenv("HOST"),
+		Port:     os.Getenv("PORT"),
+		Username: os.Getenv("BASENAME"),
+		Password: os.Getenv("DB_PASSWORD"),
+		DBname:   os.Getenv("DB_NAME"),
+		SSLMode:  os.Getenv("SSLMODE"),
 	})
 	if err != nil {
-		log.Fatal("failed to init", err)
+		logrus.Fatal("failed to init", err)
 	}
 
 	//repos
@@ -34,6 +44,6 @@ func main() {
 	//start
 	srv := new(todo.Server)
 	if err := srv.Run("3000", handler.InitRoutes()); err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 }

@@ -6,11 +6,11 @@ import (
 )
 
 type Handler struct {
-	service *service.Service
+	services *service.Service
 }
 
-func NewHandler(service *service.Service) *Handler {
-	return &Handler{service: service}
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{services: services}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
@@ -18,9 +18,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
-		auth.POST("/sign-up", h.)
-		auth.POST("/sign-in", h.SignIn)
+		auth.POST("/sign-up", h.SignIn)
+		auth.POST("/sign-in", h.SignUp)
 	}
+
 	api := router.Group("/api", h.userIdentity)
 	{
 		lists := api.Group("/lists")
@@ -35,9 +36,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			{
 				items.POST("/", h.createItem)
 				items.GET("/", h.getAllItems)
-				items.GET("/", h.getItemById)
-				items.PUT("/", h.updateItem)
-				items.DELETE("/", h.deleteItem)
+				items.GET("/:item_id", h.getItemById)
+				items.PUT(":item_id", h.updateItem)
+				items.DELETE(":item_id", h.deleteItem)
 			}
 		}
 	}
