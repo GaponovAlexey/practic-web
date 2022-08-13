@@ -18,9 +18,9 @@ func main() {
 	if err != nil {
 		logrus.Fatal("Error loading .env file")
 	}
-
 	//config LogrusJson
 	logrus.SetFormatter(new(logrus.JSONFormatter))
+
 	//db
 	db, err := repository.NewPostgresDB(repository.Config{
 		Host:     os.Getenv("HOST"),

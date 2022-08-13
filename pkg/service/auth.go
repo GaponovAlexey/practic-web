@@ -40,18 +40,16 @@ func (s *AuthService) CreateUser(user todo.User) (int, error) {
 
 //token
 func (s *AuthService) GenerateToken(username, password string) (string, error) {
-	//get
 	user, err := s.repo.GetUser(username, generatePasswordHash(password))
 	if err != nil {
-		return "", err
+		return "", nil
 	}
-
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(tokenTTL).Unix(),
 			IssuedAt:  time.Now().Unix(),
-		},
-		user.Id})
+		}, user.Id})
+
 	return token.SignedString([]byte(signingKey))
 }
 
