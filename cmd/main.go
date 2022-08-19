@@ -13,6 +13,8 @@ import (
 )
 
 func main() {
+
+	
 	//env
 	err := godotenv.Load()
 	if err != nil {
@@ -43,7 +45,7 @@ func main() {
 
 	//start
 	srv := new(todo.Server)
-	if err := srv.Run("3000", handler.InitRoutes()); err != nil {
+	if err := srv.Run("3001", handler.InitRoutes()); err != nil {
 		logrus.Fatal(err)
 	}
 }
